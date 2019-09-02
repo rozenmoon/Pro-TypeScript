@@ -156,3 +156,72 @@ enum BoxSize {
     XXLarge
 }
 ```
+
+### Bit flag
+-> enums are used to define bit flags
+
+### Type assertions
+-> Use only when you are sure of type
+```
+interface House {
+    bedrooms: number;
+    bathrooms: number;
+}
+
+interface Mansion {
+    bedrooms: number;
+    bathrooms: number;
+    butlers: number;
+}
+
+var avenueRoad: House = {
+    bedrooms: 11,
+    bathrooms: 10,
+    butlers: 1
+};
+
+// Errors: Cannot convert House to Mansion
+var mansion: Mansion = avenueRoad;
+
+// Works
+var mansion: Mansion = <Mansion>avenueRoad; -> here
+```
+
+-> although type assertion overrides the type but checks are still performed when type is assert, it is possible to do force a type assertion
+
+```
+var name: string = 'Avenue Road';
+
+// Error: Cannot convert 'string' to 'number'
+var bedrooms: number = <number> name;
+
+// Works
+var bedrooms: number = <number> <any> name;
+```
+
+NOTE:
+The rules for determining the type resulting from a plus operation are
+
+- If the type of either of the arguments is a string, the result is always a string.
+- If the type of both arguments is either number or enum, the result is a number.
+- If the type of either of the arguments is any, and the other argument is not a string, the result is any.
+- In any other case, the operator is not allowed.
+
+### Short-circuit Evaluation
+-> as soon as statement can be answered evaluation resolved
+-> ensure the value is defined before it is used
+
+
+### Function
+```
+function getAverage(a: number, b: number, c: number): string {
+    var total = a + b + c;
+    var average = total / 3;
+    return 'The average is ' + average;
+}
+
+var result = getAverage(4, 3, 8); // 'The average is 5'
+```
+-> it is worth leaving out the return type unless the function returns no value. If you don’t intend to return a value, an explicit `void` type will prevent a return value being added to a function at a later date that could break the design
+
+->
