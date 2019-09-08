@@ -818,3 +818,57 @@ const longAddNumbers = function (a: number, b: number) {
 ```
 const makeName = (f: string, l: string) => ({ first: f, last: l });
 ```
+
+- also use to prevent lexical scope of `this` keyword
+- ts compiler creates `_this` just before the arrow fuction is defined and set its value to current value of this
+- It also substitutes any usages of `this` within the function with the newly introduced `_this` variable, so the statement now reads `_this.text` in the JavaScript output.
+- The use of the `_this` variable inside the function creates a closure around the variable, which preserves its context along with the function.
+DId not understand this
+
+### Function Currying
+- We can hold onto the result of the first fuction call and use it many times is one of key point of currying
+
+```
+const multiply = (a: number) => (b: number) => a * b;
+// Pass both arguments in sequence: 30
+const numA = multiply(5)(6);
+// Pass just the first argument and re-use
+const orderOfMagnitude = multiply(10);
+// 10
+const deca = orderOfMagnitude(1);
+// 100
+const hecta = orderOfMagnitude(deca);
+// 1,000
+const kilo = orderOfMagnitude(hecta);
+```
+currying with overload
+
+```
+function multiply(a: number): (b: number) => number;
+function multiply(a: number, b: number): number;
+function multiply(a: number, b: number = null) {
+    if (b === null) {
+        return (b: number) => a * b;
+    }
+    return a * b;
+}
+// Pass both arguments "normally": 30
+const numA = multiply(5, 6);
+// Pass just the first argument and re-use
+const orderOfMagnitude = multiply(10);
+// 10
+const deca = orderOfMagnitude(1);
+// 100
+const hecta = orderOfMagnitude(deca);
+// 1,000
+const kilo = orderOfMagnitude(hecta);
+```
+- if you are calling the function several times with same parameter consider using curring
+
+### Interface
+- Interface do not result in generation of any js due to type erasure
+- Inteface are used at design time to provide autocompletion and at compile time to provide type checking
+- Like enumerations, interface remain open and all the decalaration with a common root are merged into single structure
+- can’t declare the same property in multiple blocks of the same interface "duplicate identifier” error will be thrown
+
+
