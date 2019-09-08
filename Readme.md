@@ -128,8 +128,7 @@ const john: PersonType = {
 
 ### Enumerations
 
--> Enumerations represent a collection of named elements that you can use to avoid littering your program with hard-coded values
-->
+## -> Enumerations represent a collection of named elements that you can use to avoid littering your program with hard-coded values
 
 ```
 enum VehicleType {
@@ -146,7 +145,7 @@ var type = VehicleType.Lorry;
 var typeName = VehicleType[type]; // 'Lorry'
 ```
 
-->
+-
 
 ```
 enum BoxSize {
@@ -165,8 +164,8 @@ enum BoxSize {
 
 ### Bit flag
 
--> enums are used to define bit flags
--> the assigned values must follow the binary sequence, each value is a power of 2s
+- enums are used to define bit flags
+- the assigned values must follow the binary sequence, each value is a power of 2s
 
 ```
 enum DiscFlags {
@@ -189,14 +188,14 @@ var hasS = (personality & DiscFlags.Steadiness) == DiscFlags.Steadiness;
 var hasC = (personality & DiscFlags.Conscientiousness) == DiscFlags.Conscientiousness;
 ```
 
--> the value assigned to each item can be constant or computed
--> constant values are any expression that can be interpreted by type system, such as literal values , calculation and binary operators
--> computed values are expressions that cannot be effetivly interpreted by compiler such string length or calling out method
+- the value assigned to each item can be constant or computed
+- constant values are any expression that can be interpreted by type system, such as literal values , calculation and binary operators
+- computed values are expressions that cannot be effetivly interpreted by compiler such string length or calling out method
 
 ### const Enumeraration
 
--> created using the const keyword
--> is erased during compilation and all code referring to it is replaced with hard-coded values
+- created using the const keyword
+- is erased during compilation and all code referring to it is replaced with hard-coded values
 
 ```
 const enum VehicleType {
@@ -213,12 +212,12 @@ var type = 5 /* Lorry */;
 JavaScript output of a constant enumeration
 ```
 
--> const enmunerator are not allowed to have computed members
+- const enmunerator are not allowed to have computed members
 
 ### Union types
 
--> Can be read by 'OR'
--> It widens the allowable values
+- Can be read by 'OR'
+- It widens the allowable values
 
 ```
 // Type annotation for a union type
@@ -235,12 +234,12 @@ type StringOrError = string | Error;
 type SeriesOfTypes = string | number | boolean | Error;
 ```
 
--> Consider using a type alias to reduce repetition
--> Union type can be created using any types available not just primitive types
+- Consider using a type alias to reduce repetition
+- Union type can be created using any types available not just primitive types
 
 ### Literal types
 
--> Literal types can be used to narrow the range of allowable values to a subset of the type such as reducing a string to set of specific values
+- Literal types can be used to narrow the range of allowable values to a subset of the type such as reducing a string to set of specific values
 
 ```
 type Kingdom = 'Bacteria' | 'Protozoa' | 'Chromista' | 'Plantae' | 'Fungi' | 'Animalia';
@@ -251,7 +250,7 @@ kingdom = 'Bacteria';
 kingdom = 'Protista';
 ```
 
--> Literal types are just union types made up of specific values, so number literal type or union/literal hybrid type can also be created using the same syntax
+- Literal types are just union types made up of specific values, so number literal type or union/literal hybrid type can also be created using the same syntax
 
 ```
 / Number literal type
@@ -277,8 +276,8 @@ random = true;
 
 ### Intersection Type
 
--> Its the opposit of Union type which means 'either A or B'. Intersection type means "both A and B".
--> It uses ampersand sign and is read as 'AND'
+- Its the opposit of Union type which means 'either A or B'. Intersection type means "both A and B".
+- It uses ampersand sign and is read as 'AND'
 
 ```
 interface Skier {
@@ -291,12 +290,12 @@ type Biathelete = Skier & Shooter;
 
 ```
 
--> It is usefull in 'mixins'
+- It is usefull in 'mixins'
 
 ### Arrays
 
--> To specify an array type, you simply add square brackets after the type name.
--> Array<type>(long hand) or type[](short hand)
+- To specify an array type, you simply add square brackets after the type name.
+- Array<type>(long hand) or type[](short hand)
 
 ```
 interface Monument {
@@ -315,11 +314,11 @@ monuments.push({
 });
 ```
 
--> this is allowed because 'status of liberty' object is compatible to Moment interface, this is called 'structural typing'
+- this is allowed because 'status of liberty' object is compatible to Moment interface, this is called 'structural typing'
 
 ### Tuple Type
 
--> Tuple type uses an array and specifies the type of elements based on its position
+- Tuple type uses an array and specifies the type of elements based on its position
 
 ```
 let poem: [number, boolean, string];
@@ -332,9 +331,9 @@ poem = ['my', true, 'love'];
 
 ### Dictionary types
 
--> we can represent dictionary in ts using index type
--> index type specifies the key and its type in square brackets and the type of the value afterwards as type annotation
--> The cephalopod dictionary is an object with dynamic keys, but TypeScript will ensure the types of the keys and values are correct.
+- we can represent dictionary in ts using index type
+- index type specifies the key and its type in square brackets and the type of the value afterwards as type annotation
+- The cephalopod dictionary is an object with dynamic keys, but TypeScript will ensure the types of the keys and values are correct.
 
 ```
 let dictionary: CephalopodDictionary = {};
@@ -351,9 +350,9 @@ delete dictionary['octopus vulgaris'];
 
 ### Mapped type
 
--> it reduces the efforts to create similar types that differs only in optionality or readability
--> it allows to create variations of exiting typre in a single expression
--> it used `keyof` keyword which is an index type query that gathers a list of permitted property names for a type
+- it reduces the efforts to create similar types that differs only in optionality or readability
+- it allows to create variations of exiting typre in a single expression
+- it used `keyof` keyword which is an index type query that gathers a list of permitted property names for a type
 
 ```
 interface Options {
@@ -393,6 +392,67 @@ type ReadonlyOptions = Readonly<Options>;
 type OptionalOptions = Optional<Options>;
 type NullableOptions = Nullable<Options>;
 ```
+
+### Discriminated Union
+
+1. several type that share a common string literal property called a discriminant
+2. A type alias for union of these types called a union
+3. A type guard that checks the discriminant
+
+```
+interface Cube {
+    kind: 'cube'; // Discriminant
+    size: number;
+}
+interface Cuboid {
+    kind: 'cuboid'; // Discriminant
+    width: number;
+    depth: number;
+    height: number;
+}
+// Union
+type Prism = Cube | Cuboid;
+function volume(prism: Prism): number {
+    // Type Guard
+    switch (prism.kind) {
+        case 'cube':
+            return prism.size * prism.size * prism.size;
+        case 'cuboid':
+            return prism.width * prism.depth * prism.height;
+        default:
+            assertNever(prism);
+            break;
+    }
+}
+function assertNever(arg: never): never {
+    throw new Error("Possible new tagged type: " + arg);
+}
+
+```
+
+### Increment and Decrement
+
+- it is applicable on `number`, `any` and `enum`
+- if the `enum` goes out of range the undefined is returned
+
+```
+enum Size {
+    S,
+    M,
+    L,
+    XL
+}
+var size = Size.S;
+++size;
+console.log(Size[size]); // M
+var size = Size.XL;
+--size;
+console.log(Size[size]); // L
+var size = Size.XL;
+++size;
+console.log(Size[size]); // undefined
+```
+
 
 ### Type assertions
 
@@ -445,7 +505,7 @@ function typeGuardExample(stringNumber: string | number) {
     // Error: Property does not exist
     const a = stringNumber.length;
     const b = stringNumber.toFixed();
-    // Type guard
+    // this is Type guard
     if (typeof stringNumber === 'string') {
         // OK
         return stringNumber.length;
@@ -684,3 +744,77 @@ The Js code generated by default parameters includes a `typeof` check
 As check is moved inside the function body we can use wide range of runtime values as default values. not restricted to compile-time constants.
 
 ### Rest Parameters
+Same as above
+
+### Overload
+- it is recomonded to write a seperate well named function that makes the intension explicit
+- ts can overload all the overloads in a single implementation
+The actual signature of the function appears last and is hidden by the overloads
+- the final signature is called an implementation signature
+- the implementation signature must define parameter and return value that are compatible with all the preceding signature
+- the overload can have fewer parameter and also their type can be different but the implementation signature have to mark the extra parameters optional, default or rest parameters
+- when the function with overload defined is called the compiler constructs a list of signature that matchs the function call, if no match the call results an error, if one or more matches the earlist of matching signature in the order they appear in the file determines the return type
+
+```
+function getAverage(a: string, b: string, c: string): string;
+function getAverage(a: number, b: number, c: number): string;
+// implementation signature
+function getAverage(a: any, b: any, c: any): string {
+    const total = parseInt(a, 10) + parseInt(b, 10) + parseInt(c, 10);
+    const average = total / 3;
+    return 'The average is ' + average;
+}
+// The average is 5
+const result = getAverage(4, 3, 8);
+
+```
+- it creates an burden to the function as type may need to be tested or converted and they may cause multiple logical branches within the function
+- simpler solution would be to use union type of `string | number` with a single funciton signature
+
+
+ ### Specialized overload signatures
+ - creating overload based on string constant rather than the overload being based on different parameters
+
+ There are some rules to follow when using specialized overload signatures
+1. There must be at least one nonspecialized signature.
+2. Each specialized signature must return a subtype of a nonspecialized signature.
+3. The implementation signature must be compatible with all signatures.
+
+```
+class HandlerFactory {
+    getHandler(type: 'Random'): RandomHandler;
+    getHandler(type: 'Reversed'): ReversedHandler;
+    getHandler(type: string): Handler; // non-specialized signature
+    getHandler(type: string): Handler { // implementation signature
+        switch (type) {
+            case 'Random':
+                return new RandomHandler();
+            case 'Reversed':
+                return new ReversedHandler();
+            default:
+                return new Handler();
+        }
+    }
+}
+```
+DId not understant the DOM element example
+
+### Arrow functiom
+
+ts compiler has option to target version 3 and version 5 of ECMAScripts specification and has support for new annual version such as ECMA2015 onwards.
+Version 4 was abandoned
+```
+const shortAddNumbers = (a: number, b: number) => a + b;
+const mediumAddNumbers = (a: number, b: number) => {
+    return a + b;
+}
+const longAddNumbers = function (a: number, b: number) {
+    return a + b;
+}
+
+```
+- when using the first case -> when an object is returned { firstName: 'Mark', lastName: 'Rendle' } of object comfuses the compiler, in this case it should be wrapped by ({})
+
+```
+const makeName = (f: string, l: string) => ({ first: f, last: l });
+```
